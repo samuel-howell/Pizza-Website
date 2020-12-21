@@ -41,7 +41,7 @@ h1 {
 }
 .parentFieldBoxStyle {
     text-align: center;
-    margin-top: 9%;        /*changing this affects the other text boxs, knocking it way down the screen. */
+    margin-top: 4%;        /*changing this affects the other text boxs, knocking it way down the screen. */
     position: relative;
     overflow: hidden;
 

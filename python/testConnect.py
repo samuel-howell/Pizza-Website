@@ -1,24 +1,22 @@
-import mariadb
-import sys  #  imported so I can use the sys.exit command
+import pymysql
 
-#  attempt a connection
-try:
-    conn = mariadb.connect(
-        user = "root",
-        password = "",
-        host = "localhost",
-        port = 3306)
-except mariadb.Error as e:
-    print(f"Error connecting to MariaDB Platform: {e}")
-    sys.exit(1)
+# -------------------------------------------------------------------------------------------------------
+# #  an example on how to insert data into the mysql database using python
+# #database connection
+# connection = pymysql.connect(host="localhost",user="root",passwd="",database="pizzeriadb" )
+# cursor = connection.cursor()
+# # some other statements  with the help of cursor
 
-#  instantiate a cursor
-cur = conn.cursor()
+# insert1 = "INSERT INTO loginform(username, password) VALUES ('terrygg', 'password123');"    #sql statemeent
 
-def add(cur, n, p):
-    cur.execute("INSERT INTO pizzeriadb.loginform(username, password) VALUES (?, ?)", (n, p))
+# cursor.execute(insert1)
 
-n = "Jaems"
-p = "rinbainboa"
+# connection.commit()
+# connection.close()
+# -------------------------------------------------------------------------------------------------------
 
-add(cur, n, p)
+#run this in powershell to start the virtual environment
+#1.  py -3 -m venv .venv
+#2. .venv\scripts\activate
+
+#  link with good information concerning python and databases-> https://tutorialslides.com/how-to-connect-and-create-database-on-mysql-phpmyadmin-using-python/ 

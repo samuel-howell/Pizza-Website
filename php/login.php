@@ -1,7 +1,5 @@
 <?php
 
-$usernameError = "";
-$passwordError = "";
 
 //  assign these vars the input from the appropriate input boxes on the index.html page (the "name" in the tag)
 $username = $_POST['username'];

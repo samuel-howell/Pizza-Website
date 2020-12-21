@@ -1,0 +1,8 @@
+now that I've established a way to pull data from the database into python vars, I need to figure out how to calculate graphs
+
+need to get php error messages to display (using js) on login page, and not redirect to a white ugly php page
+
+need to figure out how to validate passwords and usernames on login page
+
+
+

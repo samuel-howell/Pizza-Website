@@ -17,26 +17,31 @@
     <h1 class = "title">Place Order</h1>
 
     <!--buttons on the page-->
-    <form action = "placeOrder_page.php">
-            <input type = "text" class = "parentFieldBoxStyle" placeholder = "Customer Name..."> 
+    <form action = "../php/placeOrder_page.php" method = "post">
+        <input type = "text" name = "fname" class = "parentFieldBoxStyle" placeholder = "First Name..."> 
+        <input type = "text" name = "lname" class = "fieldBoxStyle" placeholder = "Last Name..."> 
 
-        <input type = "text" class = "fieldBoxStyle" placeholder = "Customer Address..."> 
+        <input type = "text" name = "address" class = "fieldBoxStyle" placeholder = "Address..."> 
+        <input type = "text" name = "zip" class = "fieldBoxStyle" placeholder = "ZIP..."> 
 
-        <select id = "orderTypeList" class="fieldBoxStyle" required> <!--FIXME:the placeholder text is green-->
+        <!--TODO:Add orderType and topping type to database-->
+        <select id = "orderTypeList" name = "orderType" class="fieldBoxStyle" required> <!--FIXME:the placeholder text is green-->
             <option value="" disabled selected hidden>Choose Order Type...</option> <!--this is the placeholder text for the dropdown-->
-            <option value = "delivery">Delivery</option>
-            <option value = "takeout">Takeout</option>
-            <option value = "dinein">Dine-In</option>
+            <option value = "delivery" >Delivery</option>
+            <option value = "takeout" >Takeout</option>
+            <option value = "dinein" >Dine-In</option>
         </select>
 
-        <select id = "ToppingTypeList" class="fieldBoxStyle" required>
+        <select id = "ToppingTypeList" name = "toppingType" class="fieldBoxStyle" required>
             <option value="" disabled selected hidden>Choose Topping...</option>
-            <option value = "meat">Meat</option>
-            <option value = "veggies">Veggies</option>
-            <option value = "cheese">Cheese</option>
+            <option value = "meat" >Meat</option>
+            <option value = "veggies" >Veggies</option>
+            <option value = "cheese" >Cheese</option>
         </select>
 
-        <a class = "fieldBoxStyle" style = "background: #DE9E37" href="transitional_page.html">Submit</a>  
+        <!--<a class = "fieldBoxStyle" style = "background: #DE9E37" href="transitional_page.html">Submit</a>-->
+        <input type = "submit" name = "submit" value = "Submit" class = "fieldBoxStyle" style = "background: #DE9E37">
+  
 
     </form>
     
