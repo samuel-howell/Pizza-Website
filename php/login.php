@@ -1,47 +1,42 @@
 <?php
-        
+
+$usernameError = "";
+$passwordError = "";
+
+//  assign these vars the input from the appropriate input boxes on the index.html page (the "name" in the tag)
 $username = $_POST['username'];
 $password = $_POST['password'];
 
 if (!empty($username)){
     if (!empty($password))
     {
-    //     // default configuration
-    //     $host = "localhost";
-    //     $dbusername = "root";
-    //     $dbpassword = "";
-    //     $dbname = "pizzeriadb";
-
-    //     //  create a connection
-    //     $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
-        
-    // //  handles if the connection fails
-    //     if ($conn->connect_error)
-    //     {
-    //         die('Connection failed : '.$conn->connect_error);
-    //     }
-    //     else
-    //     {
 
         include "connect.php"; // use the database connection file.
-            $stmt = $conn->prepare("insert into loginform(username, password) 
-            values(?, ?)");
-            //the s stands for string. tells me to bind the username value (of string type) to database?
-            $stmt->bind_param("ss",$username, $password);
-            $stmt->execute();
-            echo "registration successful";
-            $stmt->close();
-            $conn->close();
-        //   }
+
+        $query = "INSERT INTO loginform (username, password) VALUES ('$username', '$password')";    // create a query to insert into "loginform" table
+
+        //  if query insertion is successful
+        if(mysqli_query($conn, $query))
+        {
+            echo "<script type = 'text/javascript'>alert('Success'); </script>"; // display alert message over page
+        }
+
+        //  if query insertion is failure
+        else
+        {
+            echo "<script type = 'text/javascript'>alert('Failure'); </script>"; // display alert message over page
+        }
+        mysqli_close($conn);
+
     }
     else{
-        echo "Password should not be empty";
+        echo "<script type = 'text/javascript'>alert('Password cannot be empty'); </script>"; // display alert message over page
         die();
     }
 
 }
 else{
-    echo "Username should not be empty";
+    echo "<script type = 'text/javascript'>alert('Username cannot be empty'); </script>";    
     die();
 }
 ?>
