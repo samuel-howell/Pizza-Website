@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fatima's Pizzeria - transitional page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat&display=swap" rel="stylesheet">
+    <link rel = "stylesheet" href = "../css/generateReportPage_styles.css"> <!-- the ../ moves up a folder, then finds the css-->
+    <script src = "script.js" defer></script>  <!--deferring means that JS will be downloaded, but it will not be executed until all the HTML and CSS have been loaded -->
+
+</head>
+
+<body>
+
+
+    <!--header thingy on the page-->
+    <h1 class = "title">Generate Report</h1>
+
+    <p>Enter Date Range:</p>
+
+    <!--fields on the page-->
+    <input type = "text" class = "input_field dateRange" placeholder = "MM/DD/YYYY"> 
+
+    <p>to</p>
+
+    <input type = "text" class = "input_field dateRange" placeholder = "MM/DD/YYYY">
+
+    <button class = "input_field dateRange">All</button>
+
+    <br>
+
+    <section class = "orderTypes">
+        <p>Enter Orders:</p>
+
+        <button class = "input_field">Delivery</button>
+        <button class = "input_field">Dine-In</button>
+        <button class = "input_field">Takeout</button>
+        <button class = "input_field">All</button>
+    </section>
+
+
+
+    <a class="input_field generic_btn" style = "background: #DE9E37" href="index.html">Generate</a>   <!--TODO:does this need to run a python script that downloads the graph to the computer, or does it need to link to another page that shows the results?r-->
+
+    <a href = "transitional_page.html" class = "home_btn"> 
+        <img src = "../css/images/homeBtn.svg" alt = "home button">
+    </a>
+   
+</body> 
+
+</html>

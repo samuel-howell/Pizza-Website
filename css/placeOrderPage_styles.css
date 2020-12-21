@@ -1,0 +1,102 @@
+/*  Name: Samuel Howell
+    Date: 12-1-20
+*/
+
+/*  Global styles ---------------------------------------------------------*/
+
+html {      /* this is called the box fix. add it to every project. */
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    background-color: #FFE728;
+    overflow: hidden; /* removes extra space from the bottom of the page, BUT, this page can't utilize a scroll bar now */
+}
+
+h1 {
+    color: #328E00;
+    background: #ffffff;
+    text-decoration: none;
+    text-align: center;
+    font-size: 50px;
+    margin: auto;
+    padding: 20px;           /* this padding and the border-radius makes it look like a button */ 
+    border-radius: 20px;
+    border: 5px solid;
+    width: 25em;
+    
+}
+
+/*field styles--------------------------------------------*/
+
+
+.home_btn {
+    position: relative;     /* Declared position allows for location changes */
+    float: right;           /* move it to the right side of the screen */
+    top: -100px;             /*move the image 10px closer to the top of the page */
+    left: -20px;
+}
+.parentFieldBoxStyle {
+    text-align: center;
+    margin-top: 9%;        /*changing this affects the other text boxs, knocking it way down the screen. */
+    position: relative;
+    overflow: hidden;
+
+    display: block;             /*by setting this to block, margin-left and margin-right will work*/
+    margin-left: auto;          /* this margin-left and margin_right center the boxes on the page*/
+    margin-right: auto;
+
+    color: #328E00;
+    background: #ffffff;
+    text-decoration: none;
+    font-size: 30px;
+    padding: 20px;              /* this padding and the border-radius makes it look like a button */ 
+    border-radius: 8px;
+    border: 3px solid;
+    width: 25em;
+    margin-bottom: 20px;        /* spaces out the buttons a bit more */
+
+
+}
+
+.fieldBoxStyle {
+    text-align: center;
+    padding-top: 20px;
+    position: relative;
+    overflow: hidden;
+
+    color: #328E00;
+    background: #ffffff;
+    text-decoration: none;
+    font-size: 30px;
+    padding: 20px;              /* this padding and the border-radius makes it look like a button */ 
+    border-radius: 8px;
+    border: 3px solid;
+    width: 25em;
+    margin-bottom: 20px;        /* spaces out the buttons a bit more */
+    margin-left: auto;          /* this margin-left and margin_right center the boxes on the page*/
+    margin-right: auto;
+    display: list-item;         /*places the boxes in a list format*/
+}
+
+
+/*TODO: ADD RESPONSIVE STYLES*/
+/*Responsive Styles
+-----------------------------------*/
+@media screen and (min-width: 750px)   /*everything under here applies to viewports 750px or larger.  If you did anything smaller, it would have to be 749 px, because you cant have two media quires with the same px size*/
+{
+    .username_field {
+        margin-top: 35%;
+    }
+}
+
+@media screen and (max-width: 375px)  /*width of an iphoneX.  Applies to any viewport size under 375px*/
+{
+
+    .username_field {
+        margin-top: 37em;
+    }
+}

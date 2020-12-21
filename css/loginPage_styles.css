@@ -1,0 +1,68 @@
+/*  Name: Samuel Howell
+    Date: 11-30-20
+*/
+
+/*  Global styles ---------------------------------------------------------*/
+
+html {      /* this is called the box fix. add it to every project. */
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    background-image: url('images/loginBG.svg');
+
+    background-position: top center; 
+    background-size : auto auto;
+    background-repeat: no-repeat; 
+}
+
+
+/*Login text field styles--------------------------------------------*/
+.login_field {
+    color: #000000;
+    background: #ffffff;
+    text-decoration: none;
+    padding: 20px;           /* this padding and the border-radius makes it look like a button */ 
+    border-radius: 8px;
+    width: 25em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.username_field {
+    text-align: center;
+    margin-top: 45%;    /*changing this affects the other text box, knocking it way down the screen. */
+    position: relative;
+    overflow: hidden;
+}
+
+.pswd_field {
+    text-align: center;
+    padding-top: 20px;
+    /* margin-top: 47%; */  /* this line is causing the issue */
+    position: relative;
+    overflow: hidden;
+}
+
+/*Responsive Styles
+-----------------------------------*/
+@media screen and (min-width: 750px)   /*everything under here applies to viewports 750px or larger.  If you did anything smaller, it would have to be 749 px, because you cant have two media quires with the same px size*/
+{
+    .username_field {
+        margin-top: 35%;
+    }
+}
+
+@media screen and (max-width: 375px)  /*width of an iphoneX.  Applies to any viewport size under 375px*/
+{
+
+    .username_field {
+        margin-top: 37em;
+    }
+}
