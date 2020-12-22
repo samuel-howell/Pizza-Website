@@ -13,7 +13,8 @@ html {      /* this is called the box fix. add it to every project. */
 
 body {
     background-color: #FFE728;
-    overflow: hidden; /* removes extra space from the bottom of the page, BUT, this page can't utilize a scroll bar now */
+    /*TODO: redo the styles to where you don't have to scroll to see all the input boxes on the page. then you can reenable the overflow
+    /*overflow: hidden; /* removes extra space from the bottom of the page, BUT, this page can't utilize a scroll bar now */
 }
 
 h1 {
@@ -36,12 +37,12 @@ h1 {
 .home_btn {
     position: relative;     /* Declared position allows for location changes */
     float: right;           /* move it to the right side of the screen */
-    top: -100px;             /*move the image 10px closer to the top of the page */
+    top: -120px;             /*move the image 10px closer to the top of the page */
     left: -20px;
 }
 .parentFieldBoxStyle {
     text-align: center;
-    margin-top: 4%;        /*changing this affects the other text boxs, knocking it way down the screen. */
+    margin-top: 2%;        /*changing this affects the other text boxs, knocking it way down the screen. */
     position: relative;
     overflow: hidden;
 

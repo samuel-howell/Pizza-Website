@@ -1,7 +1,7 @@
 <?php 
-include "../php/connect.php";
-$query = "SELECT * from pizza_order";
-$result = mysqli_query($query);
+include "connect.php";
+$query = "SELECT Last_Name from customer";
+$result = $conn->query($query);
 ?>
 
 
@@ -19,6 +19,7 @@ $result = mysqli_query($query);
 </head>
 
 <body>
+<!--TODO:Format this table to pull last name from customer table and order id from pizza_order table-->
 
     <table style="width:600px; margin: auto auto; border: 1px; line-height:40px;">
         <tr>
@@ -37,7 +38,7 @@ $result = mysqli_query($query);
         {
     ?>
         <tr>
-            <td><?php echo $rows.['id']?></td>
+            <td><?php echo $rows['Last_Name']; ?></td>
         </tr>  
     <?php       
         }   
@@ -77,7 +78,7 @@ $result = mysqli_query($query);
     </section>
 
 
-     
+     <!--access this page with http://localhost/Pizza%20Website/php/checkStatus_page.php -->
 
 
     <a href = "transitional_page.html" class = "home_btn"> 
