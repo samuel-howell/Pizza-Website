@@ -15,6 +15,14 @@ body {
     background-color: #FFE728;
 }
 
+table {
+    margin: auto auto auto;
+}
+
+td{
+    padding: 15px;      
+}
+
 h1 {
     color: #328E00;
     background: #ffffff;
@@ -25,7 +33,8 @@ h1 {
     padding: 20px;           /* this padding and the border-radius makes it look like a button */ 
     border-radius: 20px;
     border: 5px solid;
-    width: 25em;   
+    width: 25em;
+    margin-bottom: 1em;   
 }
 
 button {
@@ -39,21 +48,18 @@ button {
 }
 
 /*text field styles--------------------------------------------*/
-.lastNameOrderID {
+.table_cell {
     color: #328E00;
     background: #ffffff;
     text-decoration: none;
+    text-align: center;
     font-size: 17px;
-    padding: 15px;              /* this padding and the border-radius makes it look like a button */ 
-    border-radius: 10px;
     border: 3px solid;
     width: 25em;
-    margin-bottom: 20px;        /* spaces out the buttons a bit more */
-    margin-left: 25%;           /*TODO:fix this to make the left margin more even */
-    margin-right: 10%;       
-    
-    display: inline-block;
+    margin-right: 10em;
 }
+
+
 
 .orderStatus h1 + p {   /* impacts the first p after the h1 in the orderStatus section */
     margin-top: 5%;

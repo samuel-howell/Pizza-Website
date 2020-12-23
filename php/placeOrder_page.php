@@ -26,65 +26,84 @@ if (!empty($fname)){
     if(!empty($lname)){
         if (!empty($address)){
             if(!empty($zip)){
+                if(!empty($quantity)){
+                    if(!empty($date)){
 
-                include "connect.php"; // use the database connection file.
-                
-                //TODO: Find out why you can't create foreign key relationships in the phpmyadmin console
+                        include "connect.php"; // use the database connection file.
+                        
+                        //TODO: Find out why you can't create foreign key relationships in the phpmyadmin console
 
-                ////////////////////////////////////////////////////////////   Adding the customer and pizza IDs from their tables to the pizza_order table   ///////////////////////////////////////////////
+                        ////////////////////////////////////////////////////////////   Adding the customer and pizza IDs from their tables to the pizza_order table   ///////////////////////////////////////////////
 
-                $cSql = "SELECT * FROM customer ORDER BY id DESC LIMIT 1";    // gets the latest row in the customer id table
-                $cResult = $conn->query($cSql);
-                $customerID_fk = $cResult->fetch_array()['id'] ?? '';       // gets the cell in the id column in the last row
-                $customerID_fk++;                                           //  we have to +1, because technically customerID_fk is read BEFORE the latest customer is added
+                        $cSql = "SELECT * FROM customer ORDER BY id DESC LIMIT 1";    // gets the latest row in the customer id table
+                        $cResult = $conn->query($cSql);
+                        $customerID_fk = $cResult->fetch_array()['id'] ?? '';       // gets the cell in the id column in the last row
+                        $customerID_fk++;                                           //  we have to +1, because technically customerID_fk is read BEFORE the latest customer is added
 
-                $pSql = "SELECT * FROM pizza ORDER BY id DESC LIMIT 1";       // gets the latest row in the pizza table 
-                $pResult = $conn->query($pSql);
-                $pizzaID_fk = $pResult->fetch_array()['id'] ?? '';       // gets the id column in the last row
-                $pizzaID_fk++;                                           //  we have to +1, because technically pizzaID_fk is read BEFORE the latest pizza is added
+                        $pSql = "SELECT * FROM pizza ORDER BY id DESC LIMIT 1";       // gets the latest row in the pizza table 
+                        $pResult = $conn->query($pSql);
+                        $pizzaID_fk = $pResult->fetch_array()['id'] ?? '';       // gets the id column in the last row
+                        $pizzaID_fk++;                                           //  we have to +1, because technically pizzaID_fk is read BEFORE the latest pizza is added
 
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                //TODO: Make sure to rebuild the tables at some point to reset all the auto-increments to 0
-                $query1 = "INSERT INTO customer (First_Name, Last_Name, Address, ZIP) VALUES ('$fname', '$lname', '$address', '$zip')";    // create a query to insert into "customer" table
-                $query2 = "INSERT INTO pizza (topping_type) VALUES ('$toppingType')";
-                $query3 = "INSERT INTO pizza_order (order_type, customer_id, pizza_id, order_date, quantity) VALUES ('$orderType', '$customerID_fk', '$pizzaID_fk', '$date', '$quantity')";
+                        //TODO: Make sure to rebuild the tables at some point to reset all the auto-increments to 0
+                        $query1 = "INSERT INTO customer (First_Name, Last_Name, Address, ZIP) VALUES ('$fname', '$lname', '$address', '$zip')";    // create a query to insert into "customer" table
+                        $query2 = "INSERT INTO pizza (topping_type) VALUES ('$toppingType')";
+                        $query3 = "INSERT INTO pizza_order (order_type, customer_id, pizza_id, order_date, quantity) VALUES ('$orderType', '$customerID_fk', '$pizzaID_fk', '$date', '$quantity')";
 
 
-                //  if every query insertion is successful... (mysqli_query() is an execute command basically)
-                if(mysqli_query($conn, $query1) && mysqli_query($conn, $query2) && mysqli_query($conn, $query3))
-                {
-                    echo "<script type = 'text/javascript'>alert('Success'); </script>"; // display alert message over page
-                    echo $pizzaID_fk;
+                        //  if every query insertion is successful... (mysqli_query() is an execute command basically)
+                        if(mysqli_query($conn, $query1) && mysqli_query($conn, $query2) && mysqli_query($conn, $query3))
+                        {
+                            echo "<script type = 'text/javascript'>alert('Success'); </script>"; // display alert message over page
+                            echo $pizzaID_fk;
 
+                        }
+
+                        //  if query insertion is failure
+                        else
+                        {
+                            echo "<script type = 'text/javascript'>alert('Failure'); </script>"; // display alert message over page
+
+                        
+                        }
+                        mysqli_close($conn);
+                        header('Refresh: .1; URL=http://localhost/Pizza%20Website/HTML/transitional_page.html');  //TODO: Figure out a way to know whether to switch back to transitional_page (for manager) or eTransitional_page (for employee)   
+                    }
+                    else{
+                        echo "<script type = 'text/javascript'>alert('date cannot be empty'); </script>"; // display alert message over page
+                        header('Refresh: .1; URL=http://localhost/Pizza%20Website/HTML/placeOrder_page.html'); //  redirects to the same  page to try again after .1 second(so it can show the failure message)    
+                        die();
+                    }
                 }
-
-                //  if query insertion is failure
-                else
-                {
-                    echo "<script type = 'text/javascript'>alert('Failure'); </script>"; // display alert message over page
-
-                   
+                else{
+                    echo "<script type = 'text/javascript'>alert('quantity cannot be empty'); </script>"; // display alert message over page
+                    header('Refresh: .1; URL=http://localhost/Pizza%20Website/HTML/placeOrder_page.html'); //  redirects to the same  page to try again after .1 second(so it can show the failure message)    
+                    die();
                 }
-                mysqli_close($conn);
             }
             else{
                 echo "<script type = 'text/javascript'>alert('zip cannot be empty'); </script>"; // display alert message over page
+                header('Refresh: .1; URL=http://localhost/Pizza%20Website/HTML/placeOrder_page.html'); //  redirects to the same  page to try again after .1 second(so it can show the failure message)    
                 die();
             }
         }
         else{
             echo "<script type = 'text/javascript'>alert('Address cannot be empty'); </script>"; // display alert message over page
+            header('Refresh: .1; URL=http://localhost/Pizza%20Website/HTML/placeOrder_page.html'); //  redirects to the same  page to try again after .1 second(so it can show the failure message)    
             die();
         }
     }
     else{
         echo "<script type = 'text/javascript'>alert('last name cannot be empty'); </script>"; // display alert message over page
+        header('Refresh: .1; URL=http://localhost/Pizza%20Website/HTML/placeOrder_page.html'); //  redirects to the same  page to try again after .1 second(so it can show the failure message)    
         die();
     }
 }
 else{
-    echo "<script type = 'text/javascript'>alert('first name cannot be empty'); </script>";    
+    echo "<script type = 'text/javascript'>alert('first name cannot be empty'); </script>";
+    header('Refresh: .1; URL=http://localhost/Pizza%20Website/HTML/placeOrder_page.html'); //  redirects to the same  page to try again after .1 second(so it can show the failure message)        
     die();
 }
 ?>
