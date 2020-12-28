@@ -21,7 +21,9 @@ $result = mysqli_query($conn, $sql);
     <title>Fatima's Pizzeria - transitional page</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat&display=swap" rel="stylesheet">
     <link rel = "stylesheet" href = "../css/checkStatusPage_styles.css"> <!-- the ../ moves up a folder, then finds the css-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!--have to include this jquery CDN import call above local js file-->
     <script src = "../js/checkStatus_page.js" defer></script>  <!--deferring means that JS will be downloaded, but it will not be executed until all the HTML and CSS have been loaded -->
+
 
 </head>
 
@@ -50,11 +52,12 @@ $result = mysqli_query($conn, $sql);
                     if($count != 8) // this allows us to only show the 8 latest orders at any time, and thus prevents this table from growing extremely long.
                     {
                         $count++;
+                        //TODO: figure out a way to concatenate the count valuse to the button id.  That way you can reference by ID in the JS
             ?>
                         <tr>
                             <td class = "table_cell"><?php echo $row['Last_Name'];?></td>
                             <td class = "table_cell"><?php echo '(' . $row['order_id'] . ')';?></td>
-                            <td class = "table_cell"><button id="statusBtn" onclick="this.style.backgroundColor = '#05FF00'">In Progress</button></td>
+                            <td class = "table_cell"><button id="statusBtn" onclick="myFunction()" value="test">In Progress</button></td>
                             <!-- TODO:change button color and text with js -->
                         </tr>
             <?php

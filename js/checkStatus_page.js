@@ -1,4 +1,8 @@
-// changes the background color of an element
-function chBackcolor(color) {       
-    document.getElementById("button").bgcolor="green";
- }
+ 
+  function myFunction() {
+      $("button").click(function() { 
+        // Change text of input button 
+        $(".statusBtn").html("completed"); 
+    });
+  }
+     
