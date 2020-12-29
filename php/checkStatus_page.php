@@ -9,6 +9,8 @@ include "connect.php";
     top of the table */
 $sql = "SELECT * FROM customer INNER JOIN pizza_order ON customer.id = pizza_order.customer_id ORDER BY id DESC"; 
 $result = mysqli_query($conn, $sql);
+
+
 ?>
 
 
@@ -52,20 +54,49 @@ $result = mysqli_query($conn, $sql);
                     if($count != 8) // this allows us to only show the 8 latest orders at any time, and thus prevents this table from growing extremely long.
                     {
                         $count++;
-                        //TODO: figure out a way to concatenate the count valuse to the button id.  That way you can reference by ID in the JS
             ?>
                         <tr>
                             <td class = "table_cell"><?php echo $row['Last_Name'];?></td>
                             <td class = "table_cell"><?php echo '(' . $row['order_id'] . ')';?></td>
-                            <td class = "table_cell"><button id="statusBtn" onclick="myFunction()" value="test">In Progress</button></td>
-                            <!-- TODO:change button color and text with js -->
+                            <td class = "table_cell"><button id="statusBtn" name = "fulfilled" onclick="changeStatusBtn()">In Progress</button></td>
                         </tr>
             <?php
+            //  the code below will not work because all statusBtns have "fulfilled" as their name.  how do I isolate? 
+            /*  TODO:
+                    Perhaps use AJAX in my js?
+                    if the button is clicked.
+                        1. find row 9tr) that has the statusBtn cell (td) that was clicked
+                        2. find the order id that is on that same row
+                        3. match that^ order id to the order id in the pizza_order table in DB. Note the row in the table
+                        4. change the value in that "fulfilled" column in the row from 0 to 1
+
+                        This will allow me to check whether any orders on the checkStatus page have already been completed when the page is 
+                        loaded, so I can go ahead and turn them green and have them say "completed" when the page initially loads.
+
+            */
+                 if(isset($_POST['fulfilled']))
+                 {
+                     $fulfilledQuery = "INSERT INTO pizza_order (fulfilled) VALUES ('1')";
+                     $fResult = mysqli_query($conn, $fulfilledQuery);
+
+                     if($fResult)
+                     {
+                         mysqli_close($conn);
+                     }
+                     else
+                     {
+                        echo "<script type = 'text/javascript'>alert('fulfill entry failed'); </script>"; // display alert message over page
+                        header('Refresh: .1; URL=http://localhost/Pizza%20Website/php/checkStatus_page.php'); //  redirects to the same  page to try again after .1 second(so it can show the failure message)    
+                        die();
+                     }
+                 }
                     }
                   }  
                 }
             ?>
     </table>
+    
+    
 
     </section>
 
