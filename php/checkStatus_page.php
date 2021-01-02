@@ -1,16 +1,6 @@
 <?php 
 //  connect to database
 include "connect.php";
-
-//  find the last name column in the customer table and the order_id column in the pizza_order table
-
-/* This sql statement joins the pizza_order and customer tables where the "id" column in the customer table matches the 
-    "order_id" column in the pizza_order table... I think so anyway....  It orders by descending so the latest orders are at the
-    top of the table */
-$sql = "SELECT * FROM customer INNER JOIN pizza_order ON customer.id = pizza_order.customer_id ORDER BY id DESC"; 
-$result = mysqli_query($conn, $sql);
-
-
 ?>
 
 
@@ -44,55 +34,54 @@ $result = mysqli_query($conn, $sql);
             <th>Status</th>
            
         </tr>
-        <tr>
+
             <?php
+
+            /* This sql statement joins the pizza_order and customer tables where the "id" column in the customer table matches the 
+                "order_id" column in the pizza_order table... I think so anyway....  It orders by descending so the latest orders are at the
+                top of the table 
+            */
+                  $sql = "SELECT * FROM customer INNER JOIN pizza_order ON customer.id = pizza_order.customer_id ORDER BY id DESC"; // combine the customer and pizza tables where the id's match
+
+            if($result = mysqli_query($conn, $sql))
+            {
                 $count = 0;
-                if(mysqli_num_rows($result) > 0)
+                while($row = mysqli_fetch_row($result))
                 {
-                  while($row = mysqli_fetch_array($result))
-                  {
+                    //FIXME: the table is only created when there is more than one entry in the DB.  The first entry is not recorded in the html table.
+                    
                     if($count != 8) // this allows us to only show the 8 latest orders at any time, and thus prevents this table from growing extremely long.
                     {
                         $count++;
             ?>
-                        <tr>
-                            <td class = "table_cell"><?php echo $row['Last_Name'];?></td>
-                            <td class = "table_cell"><?php echo '(' . $row['order_id'] . ')';?></td>
-                            <td class = "table_cell"><button id="statusBtn" name = "fulfilled" onclick="changeStatusBtn()">In Progress</button></td>
-                        </tr>
+                <tr>
+                    <td class = "table_cell"><?php echo $row[2];?></td>                 <!--outputs the last name ($row[2]) -->
+                    <td class = "table_cell"><?php echo '(' . $row[5] . ')';?></td>     <!--outputs the order_id ($row[5]) -->
+
+                    <?php 
+                        if($row[11] == 1)            //  if row[11] (the fulfilled column) has a 1 in it show it as already been completed
+                        {
+                    ?>
+                        <td class = "table_cell">
+                            <button id="statusBtn" style = "background-color: #05FF00;">Completed</button>
+                        </td>
+                    <?php 
+                        }
+                        else                         // if the fulfilled column has a 0 in it show it as still being needed to be completed
+                        {
+                    ?>
+                    <td class = "table_cell">
+                        <a href = 'update_fulfilled.php?id=<?php echo $row[5]?>'>  <!-- this sends the element in the $row[5] position, which is the the order_id, (on whichever row the button is on) to a new php page named update_fulfilled.-->
+                            <button id="statusBtn">In Progress</button>
+                        </a>
+                    </td>
+                </tr>
+
             <?php
-            //  the code below will not work because all statusBtns have "fulfilled" as their name.  how do I isolate? 
-            /*  TODO:
-                    Perhaps use AJAX in my js?
-                    if the button is clicked.
-                        1. find row 9tr) that has the statusBtn cell (td) that was clicked
-                        2. find the order id that is on that same row
-                        3. match that^ order id to the order id in the pizza_order table in DB. Note the row in the table
-                        4. change the value in that "fulfilled" column in the row from 0 to 1
-
-                        This will allow me to check whether any orders on the checkStatus page have already been completed when the page is 
-                        loaded, so I can go ahead and turn them green and have them say "completed" when the page initially loads.
-
-            */
-                 if(isset($_POST['fulfilled']))
-                 {
-                     $fulfilledQuery = "INSERT INTO pizza_order (fulfilled) VALUES ('1')";
-                     $fResult = mysqli_query($conn, $fulfilledQuery);
-
-                     if($fResult)
-                     {
-                         mysqli_close($conn);
-                     }
-                     else
-                     {
-                        echo "<script type = 'text/javascript'>alert('fulfill entry failed'); </script>"; // display alert message over page
-                        header('Refresh: .1; URL=http://localhost/Pizza%20Website/php/checkStatus_page.php'); //  redirects to the same  page to try again after .1 second(so it can show the failure message)    
-                        die();
-                     }
-                 }
+                        }
                     }
-                  }  
                 }
+            }
             ?>
     </table>
     

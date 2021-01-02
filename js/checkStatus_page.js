@@ -1,4 +1,4 @@
- 
+  //TODO: this changeStatusBtn technically isn't used
   function changeStatusBtn() {
       $("button").click
       (
@@ -21,6 +21,7 @@
       statusBtnArr[i].setAttribute("id", i);  //  change the id of that status button to its unique val (i)
     }   
   }
+
 
   createDynamicIDs();  //  calls the function directly after the page is loaded, giving each row its own unique id
 
