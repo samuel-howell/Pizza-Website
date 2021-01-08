@@ -13,7 +13,6 @@ html {      /* this is called the box fix. add it to every project. */
 
 body {
     background-color: #FFE728;
-    overflow: hidden; /* removes extra space from the bottom of the page, BUT, this page can't utilize a scroll bar now */
 }
 
 h1 {
@@ -37,6 +36,7 @@ p {
 }
 
 /*Button styles--------------------------------------------*/
+  
 .input_field {
     color: #328E00;
     background: #ffffff;

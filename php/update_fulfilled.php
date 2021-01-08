@@ -5,9 +5,8 @@
     if(isset($_GET['id']))      //  gets the order_id (that is sent through the href) on the checkStatus_page  
     {
         $order_id = $_GET['id'];
-        echo $order_id;
 
-        $sql = "UPDATE pizza_order SET fulfilled='1' WHERE order_id='$order_id'";
+        $sql = "UPDATE pizza_order SET fulfilled='1' WHERE order_id='$order_id'";       // update the fulfilled column in the DB on whatever order is specified by the order_id
         if(mysqli_query($conn, $sql))
         {
             header('Refresh: .1; URL=http://localhost/Pizza%20Website/php/checkStatus_page.php'); //  redirects back to checkStatus page 

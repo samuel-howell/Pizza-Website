@@ -17,31 +17,45 @@
     <!--header thingy on the page-->
     <h1>Generate Report</h1>
 
-    <p>Enter Date Range:</p>
-
     <!--fields on the page-->
-    <input type = "text" class = "input_field dateRange" placeholder = "MM/DD/YYYY"> 
+    <form action = "../php/generateReport_page.php", method = "post">
+        <p>Enter Date Range:</p>
 
-    <p>to</p>
+        <input type = "date" name = "startDate" class = "input_field dateRange" placeholder = "MM/DD/YYYY"> 
 
-    <input type = "text" class = "input_field dateRange" placeholder = "MM/DD/YYYY">
+        <p>to</p>
 
-    <button class = "input_field dateRange">All</button>
+        <input type = "date" name = "endDate" class = "input_field dateRange" placeholder = "MM/DD/YYYY">
 
-    <br>
+        <label class = "input_field">All
+            <input type ="checkbox" name = "allDates" value = "allDates"> <!--https://www.w3schools.com/howto/howto_css_custom_checkbox.asp-->
+        </label>
+        
 
-    <section class = "orderTypes">
-        <p>Enter Orders:</p>
+        <br>
 
-        <button class = "input_field">Delivery</button>
-        <button class = "input_field">Dine-In</button>
-        <button class = "input_field">Takeout</button>
-        <button class = "input_field">All</button>
-    </section>
+        
+        <section class = "orderTypes">
+            <p>Enter Orders:</p>
+
+            <label class = "input_field">Delivery
+                <input type ="checkbox" name = "orderType[]" value = "delivery"> <!--https://www.w3schools.com/howto/howto_css_custom_checkbox.asp-->
+            </label>
+            
+            <label class = "input_field">Dine-in
+                <input type ="checkbox"  name = "orderType[]" value = "dinein"> <!--placing [] after the name signifies that it is an array object, allowing us to use the foreach in the php-->
+            </label>
+
+            <label class = "input_field">Takeout
+                <input type ="checkbox" name = "orderType[]" value = "takeout">
+            </label>
+        </section>
+
+        <input type = "submit" value = "submit">
 
 
-
-    <a class="input_field generic_btn" style = "background: #DE9E37" href="index.html">Generate</a>   <!--TODO:does this need to run a python script that downloads the graph to the computer, or does it need to link to another page that shows the results?r-->
+        <a class="input_field generic_btn" style = "background: #DE9E37" href="transitional_page.html">Generate</a>   <!--TODO:does this need to run a python script that downloads the graph to the computer, or does it need to link to another page that shows the results?r-->
+    </form>
 
     <a href = "transitional_page.html" class = "home_btn"> 
         <img src = "../css/images/homeBtn.svg" alt = "home button">
