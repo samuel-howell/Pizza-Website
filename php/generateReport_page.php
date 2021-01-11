@@ -23,25 +23,30 @@
     if(isset($_POST['orderType']))
     {
         $order = $_POST['orderType'];
+        $typesArr = array();        //  create an array to hold the orderTypes chosen in checkbox
 
-        //  prints out which of the check boxes where selected
-        // echo "you chose the following types: <br>";
-
-        // foreach ($order as $orderType)
-        // {
-        //     echo $orderType. "<br>";
-        // }
-        // echo $startDate. "<br>";
-        // echo $endDate. "<br>";
-
-
+        //  go through each element in the orderType[] sent to the php through POST, and add it to a php array
+        foreach ($order as $orderType)
+        {
+            array_push($typesArr, "'" . $orderType . "'");          //  go through the checkbox input sent to the php and push each selected orderType to the php array 
+                                                                    //  instead of the imploded list lookin like "delivery, dinein, takeout" it needs to look like "'delivery', 'dinein', 'takeout'" in order to be read properly
+                                                                    //  Why did I add "'" ?^^^^
+        }
        
-        //  select all orders between the two date criteria, then order them by newest down to oldest
-        $sql = "SELECT * FROM pizza_order WHERE order_date BETWEEN '$startDate' AND '$endDate' ORDER BY order_date DESC";   
+      
+        echo "<br>";
+        echo "<br>";
 
-        //TODO:  Modify above sql query to only include db entries that have the order types specified by the user
+       //  implode the typesArr to put it in a string format understandable by the IN condition in the SQL statement GOOD INFO -> https://www.geeksforgeeks.org/how-to-bind-an-array-to-an-in-condition-in-php/ 
+       $implodedTypesArr = implode(', ', $typesArr);
 
-        //  print them out JUST TO PROVE YOU CAN.
+      
+        $sql = "SELECT * FROM pizza_order 
+                WHERE order_date BETWEEN '$startDate' AND '$endDate'  -- select all orders between the two date criteria --
+                AND order_type IN ($implodedTypesArr)                 -- filter out all the orders whose types where not selected in the checkboxes
+                ORDER BY order_date DESC";                           //  order them by newest down to oldest
+
+
         if($array = mysqli_query($conn, $sql))
         {
 
@@ -57,6 +62,8 @@
         {
             echo "failure";
         }
+
+        
         
        
       
@@ -68,6 +75,6 @@
         die();
     }
     
-    
+    $conn->close();
 
 ?>
