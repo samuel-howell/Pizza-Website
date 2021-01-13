@@ -143,15 +143,28 @@ latePickups = random.randint(0, (totalTakeoutCount / 3))     #TODO: take this nu
 
 
 #calculate delivery profits
-grossDeliveryPizzaProfit = totalDeliveryCount * 21        # $18 per pizza + $3 for delivery. cost to make is $7 + topping cost
+grossDeliveryPizzaProfit = totalDeliveryCount * 21        # $18 per pizza + $3 for delivery. therefor, cost to make is $4 + topping cost
 deliveryCheeseCost = deliveryCheeseCount * 2            # $2 for cheese topping
 deliveryMeatCost = deliveryMeatCount * 3                # $3 for meat topping
 deliveryVeggieCost = deliveryVeggieCount * 3            # $3 for veggie topping
 deliveryMiscCost = totalDeliveryCount * 4               # $2 for crust, $1 for sauce, $1 for box
-totalCostToMake = deliveryCheeseCost + deliveryMeatCost + deliveryVeggieCost + deliveryMiscCost
+totalCostToMakeDelivery = deliveryCheeseCost + deliveryMeatCost + deliveryVeggieCost + deliveryMiscCost
 
-netDeliveryPizzaProfit = grossDeliveryPizzaProfit - totalCostToMake
-print('the gross profit for delivery pizza is ', grossDeliveryPizzaProfit, ' and after fees of ', totalCostToMake, ' the net profits are ', netDeliveryPizzaProfit)
+netDeliveryPizzaProfit = grossDeliveryPizzaProfit - totalCostToMakeDelivery
+print('the gross profit for delivery pizza is ', grossDeliveryPizzaProfit, ' and after fees of ', totalCostToMakeDelivery, ' the net profits are ', netDeliveryPizzaProfit)
+
+#calculate takout profits
+grossTakeoutPizzaProfit = totalTakeoutCount * 18        # $18 per pizza. therefor, cost to make is $4 + topping cost
+takeoutCheeseCost = takeoutCheeseCount * 2            # $2 for cheese topping
+takeoutMeatCost = takeoutMeatCount * 3                # $3 for meat topping
+takeoutVeggieCost = takeoutVeggieCount * 3            # $3 for veggie topping
+takeoutMiscCost = totalTakeoutCount * 4               # $2 for crust, $1 for sauce, $1 for box
+totalCostToMakeTakeout = takeoutCheeseCost + takeoutMeatCost + takeoutVeggieCost + takeoutMiscCost
+
+netTakeoutPizzaProfit = grossTakeoutPizzaProfit - totalCostToMakeTakeout
+print('the gross profit for takeout pizza is ', grossTakeoutPizzaProfit, ' and after fees of ', totalCostToMakeTakeout, ' the net profits are ', netTakeoutPizzaProfit)
+
+#TODO:calculate dinein profits
 
 # -------------------------------------------------------------------------------------------------------
 
