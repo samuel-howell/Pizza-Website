@@ -47,9 +47,9 @@
        //  implode the typesArr to put it in a string format understandable by the IN condition in the SQL statement GOOD INFO -> https://www.geeksforgeeks.org/how-to-bind-an-array-to-an-in-condition-in-php/ 
        $implodedTypesArr = implode(', ', $typesArr);
 
-        $sql = "SELECT * FROM pizza_order 
-                WHERE order_date BETWEEN '$startDate' AND '$endDate'  -- select all orders between the two date criteria --
-                
+        $sql = "SELECT * FROM pizza_order
+                INNER JOIN pizza ON pizza_order.pizza_id = pizza.id  -- join the pizza table so we can tell wich kinds of pizza have been ordered
+                WHERE order_date BETWEEN '$startDate' AND '$endDate'  -- select all orders between the two date criteria --   
                 AND order_type IN ($implodedTypesArr)                 -- filter out all the orders whose types where not selected in the checkboxes
                 ORDER BY order_date DESC";                           //  order them by newest down to oldest
 

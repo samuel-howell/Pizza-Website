@@ -41,7 +41,9 @@ include "connect.php";
                 "order_id" column in the pizza_order table... I think so anyway....  It orders by descending so the latest orders are at the
                 top of the table 
             */
-                  $sql = "SELECT * FROM customer INNER JOIN pizza_order ON customer.id = pizza_order.customer_id ORDER BY id DESC"; // combine the customer and pizza tables where the id's match
+                  $sql = "  SELECT * FROM customer 
+                            INNER JOIN pizza_order ON customer.id = pizza_order.customer_id 
+                            ORDER BY id DESC"; // combine the customer and pizza tables where the id's match
 
             if($result = mysqli_query($conn, $sql))
             {
