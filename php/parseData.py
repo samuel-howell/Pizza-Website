@@ -21,6 +21,8 @@ from matplotlib import pyplot as plt
 
 
 #  NOTE:will print out on the generateReport_page.php page, not in the console.
+#  TODO:  Take all of the final python data on this page and somehow toss it back to the php page as vars, so that you can format it with html and css and make it look better
+
 
 after_json = sys.argv[1]                    #takes in the json php array sent from the generateReport_page.php
 employee_pay = sys.argv[2]
@@ -80,9 +82,20 @@ takeoutVeggieCount  = 0
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 for i in range(len(jsonArr)):
     row = json.loads(jsonArr[i])            #take the JSON string (jsonArr[i]) and turn it into an object, so you can call for the individual fields in it
-    print('<br>' , jsonArr[i], '<br>')
     
     #find how many of each total order type there were
     if (row["order_type"] == 'delivery'):
@@ -136,14 +149,26 @@ for i in range(len(jsonArr)):
         dineinVeggieCount += int(row["quantity"])    
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
 #find out total orders
 totalPizzasSold = totalDeliveryCount + totalDineinCount +totalTakeoutCount
 
 # simulate how many of the takeout orders were not picked up within 30 minutes
 latePickups = random.randint(0, totalTakeoutCount)    #FIXME:we don't want the program to ever simulate all takeout orders being late. so perhaps once we get a bunch of TO orders in the db we can make this random.randint(0, (totalTakeoutCount / 3))
 latePickupFees = ((latePickups * 18) * .15)     # take late pickups, multiply it  by the base price of the pizza, then add 15%
-print('<br> latePickups are', latePickups)
-print('<br> latePickupFees are', latePickupFees)
+
 
 
 #calculate delivery profits
@@ -155,9 +180,8 @@ deliveryMiscCost = totalDeliveryCount * 4               # $2 for crust, $1 for s
 totalCostToMakeDelivery = deliveryCheeseCost + deliveryMeatCost + deliveryVeggieCost + deliveryMiscCost
 
 netDeliveryPizzaProfit = grossDeliveryPizzaProfit - totalCostToMakeDelivery
-print('<br><br> the gross profit for delivery pizza is $', grossDeliveryPizzaProfit, ' and after fees of $', totalCostToMakeDelivery, ' the net profits are $', netDeliveryPizzaProfit)
 
-#calculate takout profits
+#calculate takeout profits
 grossTakeoutPizzaProfit = (totalTakeoutCount * 18) + latePickupFees      # $18 per pizza + the late pickup fees
 takeoutCheeseCost = takeoutCheeseCount * 2            # $2 for cheese topping
 takeoutMeatCost = takeoutMeatCount * 3                # $3 for meat topping
@@ -166,7 +190,6 @@ takeoutMiscCost = totalTakeoutCount * 4               # $2 for crust, $1 for sau
 totalCostToMakeTakeout = takeoutCheeseCost + takeoutMeatCost + takeoutVeggieCost + takeoutMiscCost
 
 netTakeoutPizzaProfit = grossTakeoutPizzaProfit - totalCostToMakeTakeout
-print('<br><br> the gross profit for takeout pizza is $', grossTakeoutPizzaProfit, ' and after fees of $', totalCostToMakeTakeout, ' the net profits are $', netTakeoutPizzaProfit)
 
 #TODO:calculate dinein profits
 grossDineinPizzaProfit = ((totalDineinCount * 18) + ((totalDineinCount * 18) * .05))       # $18 per pizza. and there is a 5% service charge on every pizza ordered
@@ -177,12 +200,24 @@ dineinMiscCost = totalDineinCount * 4               # $2 for crust, $1 for sauce
 totalCostToMakeDinein = dineinCheeseCost + dineinMeatCost + dineinVeggieCost + dineinMiscCost
 
 netDineinPizzaProfit = grossDineinPizzaProfit - totalCostToMakeDinein
-print('<br><br> the gross profit for dinein pizza is $', grossDineinPizzaProfit, ' and after fees of $', totalCostToMakeDinein, ' the net profits are $', netDineinPizzaProfit)
-
-print('<br><br> employee pay is ', employee_pay, '<br><br>')
 
 
-# make the pie chart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# make the orderType pie chart
 labels = 'Delivery', 'Dine-in', 'Takeout'
 
 deliveryWedge = totalDeliveryCount / totalPizzasSold
@@ -195,10 +230,102 @@ fig1, ax1 = plt.subplots()
 ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
         shadow=True, startangle=90)
 ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-ax1.set_title("Sales between " + str(startDate) + " and " + str(endDate))
+ax1.set_title("Sales between " + str(startDate) + " and " + str(endDate) + " by Order Type")
 
-plt.show()
-plt.savefig('C:/xampp/htdocs/Pizza Website/css/images/output_pie_chart.png') #FIXME:outputs a blank white png
+plt.savefig('C:/xampp/htdocs/Pizza Website/css/images/orderType_pie_chart.png', dpi=100) #saves an updated png pie chart that can then be called via href to show on the php or html page
+
+
+# make the toppingType pie chart
+labels = 'Meat', 'Cheese', 'Veggie'
+
+meatWedge = (deliveryMeatCount + takeoutMeatCount + dineinMeatCount) / totalPizzasSold
+cheeseWedge = (deliveryCheeseCount + takeoutCheeseCount + dineinCheeseCount) / totalPizzasSold
+veggieWedge = (deliveryVeggieCount + takeoutVeggieCount + dineinVeggieCount) / totalPizzasSold
+
+sizes = [meatWedge, cheeseWedge, veggieWedge]
+
+fig1, ax1 = plt.subplots()
+ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
+        shadow=True, startangle=90)
+ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+ax1.set_title("Sales between " + str(startDate) + " and " + str(endDate) + " by Topping Type")
+
+plt.savefig('C:/xampp/htdocs/Pizza Website/css/images/toppingType_pie_chart.png', dpi=100) #saves an updated png pie chart that can then be called via href to show on the php or html page
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#  print all the output  TODO:add padding maybe??? ==> https://www.w3resource.com/python/python-format.php 
+print("<br><br>")
+
+
+print("QUICK SUMMARY    -------------------------------------------------------------------------------------- <br><br>")
+
+print("Total Pizzas Sold: ", (totalPizzasSold), "<br><br>")
+print("Total Meat Pizzas Sold: ", (totalMeatCount), "<br>")
+print("Total Cheese Pizzas Sold: ", (totalCheeseCount), "<br>")
+print("Total Veggie Pizzas Sold: ", (totalVeggieCount), "<br><br>")
+
+print("Gross Sales Figures: ${:.2f}".format(grossDeliveryPizzaProfit + grossDineinPizzaProfit + grossTakeoutPizzaProfit), "<br>")
+print("Net Sales Figures: ${:.2f}".format((netDeliveryPizzaProfit + netDineinPizzaProfit + netTakeoutPizzaProfit) - int(employee_pay)), "<br><br>")
+
+print("DELIVERY  -------------------------------------------------------------------------------------- <br><br>")
+
+print("Total Delivery Orders: ", totalDeliveryCount, "<br>")
+print("____Meat Delivery Pizzas: ", (deliveryMeatCount), "<br>")
+print("____Cheese Delivery Pizzas: ", (deliveryCheeseCount), "<br>")
+print("____Veggie Delivery Pizzas: ", (deliveryVeggieCount), "<br><br>")
+
+print("Net Delivery Profit : ${:.2f}".format(netDeliveryPizzaProfit), "<br><br><br>")  #{:.2f} is formatting that rounds the float to 2 decimal places
+
+print("TAKEOUT   -------------------------------------------------------------------------------------- <br><br>")
+
+print('Total Takeout Orders: ', totalTakeoutCount, "<br>")
+print('Late Pickup Orders: ', latePickups, "<br>")
+print("____Meat Takeout Pizzas: ", (takeoutMeatCount), "<br>")
+print("____Cheese Takeout Pizzas: ", (takeoutCheeseCount), "<br>")
+print("____Veggie Takeout Pizzas: ", (takeoutVeggieCount), "<br><br>")
+
+print("Net Takeout Profit : ${:.2f}".format(netTakeoutPizzaProfit), "<br><br><br>")
+
+print("DINE-IN   -------------------------------------------------------------------------------------- <br><br>")
+
+print("Total Dine-in Orders: ", totalDineinCount, "<br>")
+print("____Meat Dine_in Pizzas: ", (dineinMeatCount), "<br>")
+print("____Cheese Dine_in Pizzas: ", (dineinCheeseCount), "<br>")
+print("____Veggie Dine_in Pizzas: ", (dineinVeggieCount), "<br><br>")
+
+
+print("Net Dine-in Profit : ${:.2f}".format(netDineinPizzaProfit), "<br><br><br>")
+
+print("EXPENDITURES   -------------------------------------------------------------------------------------- <br><br>")
+print('Employee Pay: ${:.2f}'.format(int(employee_pay)), "<br>")
+print('Delivery Costs: ${:.2f}'.format(totalCostToMakeDelivery), "<br>")
+print('Takeout Costs: ${:.2f}'.format(totalCostToMakeTakeout), "<br>")
+print('Dine-in Costs: ${:.2f}'.format(totalCostToMakeDinein), "<br><br>")
+print("Total Expenditures: ${:.2f}".format(totalCostToMakeDelivery + totalCostToMakeTakeout + totalCostToMakeDinein + int(employee_pay)), "<br><br><br>")
+
+
+print("GRAPHS   -------------------------------------------------------------------------------------- <br><br>")
+
+
 
 
 

@@ -2,14 +2,25 @@
 
     include "connect.php";
 
-    //  test sending crap to python file
-    $command = escapeshellcmd('python ../python/parseData.py');
-    $output = shell_exec($command);
-    echo $output;
-    ///////////////////////////////////////////
+?>
 
+<!DOCTYPE html>
+            <html lang="en-US">
 
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>Fatima's Pizzeria - transitional page</title>
+                <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat&display=swap" rel="stylesheet">
+                <link rel = "stylesheet" href = "../css/checkStatusPage_styles.css"> <!-- the ../ moves up a folder, then finds the css-->
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!--have to include this jquery CDN import call above local js file-->
+                <script src = "../js/checkStatus_page.js" defer></script>  <!--deferring means that JS will be downloaded, but it will not be executed until all the HTML and CSS have been loaded -->
+            </head>
 
+            <body>
+            
+
+<?php
     if(isset($_POST['startDate']) && isset($_POST['endDate']))
     {
         $startDate = $_POST['startDate'];
@@ -54,47 +65,49 @@
                 ORDER BY order_date DESC";                           //  order them by newest down to oldest
 
 
-        $startDate  =    "9999-99-99";      #  create a generic date format startDate (with irregularly high numbers)
-        $endDate    =    "1111-11-11";      #  create a generic date format endDate (with irregularly low numbers)
+        $firstDate  =    "9999-99-99";      #  create a generic date format startDate (with irregularly high numbers)
+        $lastDate    =    "1111-11-11";      #  create a generic date format endDate (with irregularly low numbers)
 
         if($array = mysqli_query($conn, $sql))
         { 
             while ($row = mysqli_fetch_assoc($array))
             {
                 #compare current date in row against endDate, to find the newest Date in the array
-                if($row['order_date'] > $endDate)
+                if($row['order_date'] > $lastDate)
                 {
-                    $endDate = $row['order_date'];
+                    $lastDate = $row['order_date'];
                 }
 
                 #compare current date in row against startDate, to find the oldest Date in the array
-                if($row['order_date'] < $startDate)
+                if($row['order_date'] < $firstDate)
                 {
-                    $startDate = $row['order_date'];
+                    $firstDate = $row['order_date'];
                 }
 
-                echo $row['order_date']. "<br>";
-                echo $row['order_type']. "<br>";
-                echo "<br>";
+                // echo $row['order_date']. "<br>";
+                // echo $row['order_type']. "<br>";
+                // echo "<br>";
                 $pythonArr[] = $row;    //  add the row to the array that will be sent to parseData.py
             }
 
             $jsonArr = json_encode($pythonArr);   // encode the array into a json format that can be read by the parseData.py
             
             //  find the number of days between the startDate and endDate
-            echo "<br><br> startDate is " . $startDate . " and endDate is ". $endDate;
-            $start = strtotime($startDate);
-            $end = strtotime($endDate);
+            $start = strtotime($firstDate);
+            $end = strtotime($lastDate);
 
             $days_between = floor(abs($end - $start) / 86400);
-            echo "<br><br> the days between are " . $days_between;
 
             //  find the number of hours that the pizza shop is open (assuming its open 11am to 11pm )
             $hours_between = $days_between * 12;
 
             //  lets assume that the pizzeria has 5 employees, each paid $8/hr.
             $employee_pay = ($hours_between * 8) * 5;
-            echo "<br><br> START <br><br>";
+
+
+
+
+            echo "<br><br> Financial Report for Fatima's Pizzeria between " . $firstDate . " and ". $lastDate ."<br><br>";
 
         
             $after_json = json_encode($jsonArr);
@@ -103,22 +116,19 @@
             $command = escapeshellcmd("python parseData.py $after_json $employee_pay $startDate $endDate"); //  pass the vars to the parseData.py file.... sys.argv[1] ==> $after_json, sys.argv[2] ==> $employee_pay, etc.
             $output = shell_exec($command);         //execute the parseData.py
             echo $output;
-        
-            
-            echo "<br><br> END";
+    ?>
+
+            <img src = "../css/images/orderType_pie_chart.png">
+            <img src = "../css/images/toppingType_pie_chart.png">
 
 
+    <?php
 
         }
         else
         {
             echo "failure";
-        }
-
-        
-        
-       
-      
+        }   
     }
     else
     {
@@ -130,3 +140,6 @@
     $conn->close();
 
 ?>
+
+            </body>
+        </html>
