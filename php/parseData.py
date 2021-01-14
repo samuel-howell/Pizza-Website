@@ -3,6 +3,8 @@ import pymysql
 import sys
 import json
 import random
+import numpy as np
+from matplotlib import pyplot as plt
 # -------------------------------------------------------------------------------------------------------
 #  an example on how to insert data into the mysql database using python
 #database connection
@@ -21,6 +23,9 @@ import random
 #  NOTE:will print out on the generateReport_page.php page, not in the console.
 
 after_json = sys.argv[1]                    #takes in the json php array sent from the generateReport_page.php
+employee_pay = sys.argv[2]
+startDate = sys.argv[3]
+endDate = sys.argv[4]
 jsonObj = json.loads(after_json)        # takes in a json string and returns a json object
 jsonStr = json.dumps(after_json)      # takes in a json object and returns a string
 
@@ -77,7 +82,7 @@ takeoutVeggieCount  = 0
 
 for i in range(len(jsonArr)):
     row = json.loads(jsonArr[i])            #take the JSON string (jsonArr[i]) and turn it into an object, so you can call for the individual fields in it
-    print(jsonArr[i])
+    print('<br>' , jsonArr[i], '<br>')
     
     #find how many of each total order type there were
     if (row["order_type"] == 'delivery'):
@@ -128,18 +133,17 @@ for i in range(len(jsonArr)):
         dineinMeatCount += int(row["quantity"])
     #find out dinein veggie
     if ((row["topping_type"] == 'veggies') and (row["order_type"] == 'dinein')):
-        dineinVeggieCount += int(row["quantity"])
+        dineinVeggieCount += int(row["quantity"])    
 
-
-
-       
+    
+#find out total orders
+totalPizzasSold = totalDeliveryCount + totalDineinCount +totalTakeoutCount
 
 # simulate how many of the takeout orders were not picked up within 30 minutes
-#FIXME:Add a category to the DB specifically for takeout that randomly decides if the order
-# was picked up late or early.  That way, that entire quantity column is tagged for a 15% increase
-
-latePickups = random.randint(0, (totalTakeoutCount / 3))     #TODO: take this number and add 15% order charge on all of these orders
-
+latePickups = random.randint(0, totalTakeoutCount)    #FIXME:we don't want the program to ever simulate all takeout orders being late. so perhaps once we get a bunch of TO orders in the db we can make this random.randint(0, (totalTakeoutCount / 3))
+latePickupFees = ((latePickups * 18) * .15)     # take late pickups, multiply it  by the base price of the pizza, then add 15%
+print('<br> latePickups are', latePickups)
+print('<br> latePickupFees are', latePickupFees)
 
 
 #calculate delivery profits
@@ -151,10 +155,10 @@ deliveryMiscCost = totalDeliveryCount * 4               # $2 for crust, $1 for s
 totalCostToMakeDelivery = deliveryCheeseCost + deliveryMeatCost + deliveryVeggieCost + deliveryMiscCost
 
 netDeliveryPizzaProfit = grossDeliveryPizzaProfit - totalCostToMakeDelivery
-print('the gross profit for delivery pizza is ', grossDeliveryPizzaProfit, ' and after fees of ', totalCostToMakeDelivery, ' the net profits are ', netDeliveryPizzaProfit)
+print('<br><br> the gross profit for delivery pizza is $', grossDeliveryPizzaProfit, ' and after fees of $', totalCostToMakeDelivery, ' the net profits are $', netDeliveryPizzaProfit)
 
 #calculate takout profits
-grossTakeoutPizzaProfit = totalTakeoutCount * 18        # $18 per pizza. therefor, cost to make is $4 + topping cost
+grossTakeoutPizzaProfit = (totalTakeoutCount * 18) + latePickupFees      # $18 per pizza + the late pickup fees
 takeoutCheeseCost = takeoutCheeseCount * 2            # $2 for cheese topping
 takeoutMeatCost = takeoutMeatCount * 3                # $3 for meat topping
 takeoutVeggieCost = takeoutVeggieCount * 3            # $3 for veggie topping
@@ -162,9 +166,41 @@ takeoutMiscCost = totalTakeoutCount * 4               # $2 for crust, $1 for sau
 totalCostToMakeTakeout = takeoutCheeseCost + takeoutMeatCost + takeoutVeggieCost + takeoutMiscCost
 
 netTakeoutPizzaProfit = grossTakeoutPizzaProfit - totalCostToMakeTakeout
-print('the gross profit for takeout pizza is ', grossTakeoutPizzaProfit, ' and after fees of ', totalCostToMakeTakeout, ' the net profits are ', netTakeoutPizzaProfit)
+print('<br><br> the gross profit for takeout pizza is $', grossTakeoutPizzaProfit, ' and after fees of $', totalCostToMakeTakeout, ' the net profits are $', netTakeoutPizzaProfit)
 
 #TODO:calculate dinein profits
+grossDineinPizzaProfit = ((totalDineinCount * 18) + ((totalDineinCount * 18) * .05))       # $18 per pizza. and there is a 5% service charge on every pizza ordered
+dineinCheeseCost = dineinCheeseCount * 2            # $2 for cheese topping
+dineinMeatCost = dineinMeatCount * 3                # $3 for meat topping
+dineinVeggieCost = dineinVeggieCount * 3            # $3 for veggie topping
+dineinMiscCost = totalDineinCount * 4               # $2 for crust, $1 for sauce, $1 for box
+totalCostToMakeDinein = dineinCheeseCost + dineinMeatCost + dineinVeggieCost + dineinMiscCost
+
+netDineinPizzaProfit = grossDineinPizzaProfit - totalCostToMakeDinein
+print('<br><br> the gross profit for dinein pizza is $', grossDineinPizzaProfit, ' and after fees of $', totalCostToMakeDinein, ' the net profits are $', netDineinPizzaProfit)
+
+print('<br><br> employee pay is ', employee_pay, '<br><br>')
+
+
+# make the pie chart
+labels = 'Delivery', 'Dine-in', 'Takeout'
+
+deliveryWedge = totalDeliveryCount / totalPizzasSold
+dineinWedge = totalDineinCount / totalPizzasSold
+takeoutWedge = totalTakeoutCount / totalPizzasSold
+
+sizes = [deliveryWedge, dineinWedge, takeoutWedge]
+
+fig1, ax1 = plt.subplots()
+ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
+        shadow=True, startangle=90)
+ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+ax1.set_title("Sales between " + str(startDate) + " and " + str(endDate))
+
+plt.show()
+plt.savefig('C:/xampp/htdocs/Pizza Website/css/images/output_pie_chart.png') #FIXME:outputs a blank white png
+
+
 
 # -------------------------------------------------------------------------------------------------------
 

@@ -54,12 +54,25 @@
                 ORDER BY order_date DESC";                           //  order them by newest down to oldest
 
 
-        if($array = mysqli_query($conn, $sql))
-        {
+        $startDate  =    "9999-99-99";      #  create a generic date format startDate (with irregularly high numbers)
+        $endDate    =    "1111-11-11";      #  create a generic date format endDate (with irregularly low numbers)
 
-           
+        if($array = mysqli_query($conn, $sql))
+        { 
             while ($row = mysqli_fetch_assoc($array))
             {
+                #compare current date in row against endDate, to find the newest Date in the array
+                if($row['order_date'] > $endDate)
+                {
+                    $endDate = $row['order_date'];
+                }
+
+                #compare current date in row against startDate, to find the oldest Date in the array
+                if($row['order_date'] < $startDate)
+                {
+                    $startDate = $row['order_date'];
+                }
+
                 echo $row['order_date']. "<br>";
                 echo $row['order_type']. "<br>";
                 echo "<br>";
@@ -68,18 +81,26 @@
 
             $jsonArr = json_encode($pythonArr);   // encode the array into a json format that can be read by the parseData.py
             
-           
+            //  find the number of days between the startDate and endDate
+            echo "<br><br> startDate is " . $startDate . " and endDate is ". $endDate;
+            $start = strtotime($startDate);
+            $end = strtotime($endDate);
+
+            $days_between = floor(abs($end - $start) / 86400);
+            echo "<br><br> the days between are " . $days_between;
+
+            //  find the number of hours that the pizza shop is open (assuming its open 11am to 11pm )
+            $hours_between = $days_between * 12;
+
+            //  lets assume that the pizzeria has 5 employees, each paid $8/hr.
+            $employee_pay = ($hours_between * 8) * 5;
             echo "<br><br> START <br><br>";
 
-            $before_json = array("qwe","wer","ert");
-            //print_r($before_json );
-            echo "<br><br>";
         
             $after_json = json_encode($jsonArr);
-            //echo $after_json;
         
             $escaped_json = escapeshellarg($after_json);
-            $command = escapeshellcmd("python parseData.py $after_json");
+            $command = escapeshellcmd("python parseData.py $after_json $employee_pay $startDate $endDate"); //  pass the vars to the parseData.py file.... sys.argv[1] ==> $after_json, sys.argv[2] ==> $employee_pay, etc.
             $output = shell_exec($command);         //execute the parseData.py
             echo $output;
         
