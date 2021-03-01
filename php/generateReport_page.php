@@ -120,6 +120,7 @@
 
             <img src = "../css/images/orderType_pie_chart.png">
             <img src = "../css/images/toppingType_pie_chart.png">
+            <!-- Sometimes we have to ctrl+F5 to do a hard reload of the page in order to see the updated graphs -->
 
 
     <?php
