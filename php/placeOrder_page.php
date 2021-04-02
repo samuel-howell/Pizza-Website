@@ -1,6 +1,14 @@
 <?php
 
+// input validation function for the form data put in by the user
+function test_input($data) {
+    $data = trim($data);                //  strip whitespace from beginning and end
+    $data = stripslashes($data);        //  unquotes a quoted string
+    $data = htmlspecialchars($data);    //  converts special characters to HTML entities, thereby breaking their purpose if used maliciously
+    return $data;
+}
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //  assign these vars the input from the appropriate input boxes on the index.html page (the "name" in the tag)
 $fname = $_POST['fname'];
 $lname = $_POST['lname'];
@@ -8,7 +16,7 @@ $address = $_POST['address'];
 $zip = $_POST['zip'];
 $quantity = $_POST['quantity'];
 $date = $_POST['date'];
-
+}
 
 //  these two issets make sure that the user has selected something from the dropdowns
 if(isset($_POST['orderType']))
@@ -25,8 +33,8 @@ if(isset($_POST['toppingType']))
 if (!empty($fname)){
     if(!empty($lname)){
         if (!empty($address)){
-            if(!empty($zip)){
-                if(!empty($quantity)){
+            if(!empty($zip) && is_numeric($zip)){
+                if(!empty($quantity) && is_numeric($quantity)){
                     if(!empty($date)){
 
                         include "connect.php"; // use the database connection file.
@@ -78,13 +86,13 @@ if (!empty($fname)){
                     }
                 }
                 else{
-                    echo "<script type = 'text/javascript'>alert('quantity cannot be empty'); </script>"; // display alert message over page
+                    echo "<script type = 'text/javascript'>alert('quantity cannot be empty or noninteger'); </script>"; // display alert message over page
                     header('Refresh: .1; URL=http://localhost/Pizza%20Website/HTML/placeOrder_page.html'); //  redirects to the same  page to try again after .1 second(so it can show the failure message)    
                     die();
                 }
             }
             else{
-                echo "<script type = 'text/javascript'>alert('zip cannot be empty'); </script>"; // display alert message over page
+                echo "<script type = 'text/javascript'>alert('zip cannot be empty or noninteger'); </script>"; // display alert message over page
                 header('Refresh: .1; URL=http://localhost/Pizza%20Website/HTML/placeOrder_page.html'); //  redirects to the same  page to try again after .1 second(so it can show the failure message)    
                 die();
             }
