@@ -1,9 +1,18 @@
 <?php
 
+// input validation function for the form data put in by the user
+function test_input($data) {
+    $data = trim($data);                //  strip whitespace from beginning and end
+    $data = stripslashes($data);        //  unquotes a quoted string
+    $data = htmlspecialchars($data);    //  converts special characters to HTML entities, thereby breaking their purpose if used maliciously
+    return $data;
+}
 
 //  assign these vars the input from the appropriate input boxes on the index.html page (the "name" in the tag)
-$username = $_POST['username'];
-$password = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = test_input($_POST['username']);
+    $password = test_input($_POST['password']);
+    }
 
 if (!empty($username)){
     if (!empty($password))
