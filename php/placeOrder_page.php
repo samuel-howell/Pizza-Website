@@ -33,7 +33,7 @@ if(isset($_POST['toppingType']))
 if (!empty($fname)){
     if(!empty($lname)){
         if (!empty($address)){
-            if(!empty($zip) && is_numeric($zip)){
+            if(!empty($zip) && is_numeric($zip) && strlen($zip) == 5){
                 if(!empty($quantity) && is_numeric($quantity)){
                     if(!empty($date)){
 
@@ -92,7 +92,7 @@ if (!empty($fname)){
                 }
             }
             else{
-                echo "<script type = 'text/javascript'>alert('zip cannot be empty or noninteger'); </script>"; // display alert message over page
+                echo "<script type = 'text/javascript'>alert('zip must be 5 characters and cannot be empty or noninteger.'); </script>"; // display alert message over page
                 header('Refresh: .1; URL=http://localhost/Pizza%20Website/HTML/placeOrder_page.html'); //  redirects to the same  page to try again after .1 second(so it can show the failure message)    
                 die();
             }
