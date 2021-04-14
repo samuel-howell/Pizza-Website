@@ -84,7 +84,7 @@
                     $firstDate = $row['order_date'];
                 }
 
-                // echo $row['order_date']. "<br>";
+                 //echo $row['order_date']. "<br>";
                 // echo $row['order_type']. "<br>";
                 // echo "<br>";
                 $pythonArr[] = $row;    //  add the row to the array that will be sent to parseData.py
